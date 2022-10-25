@@ -10,4 +10,8 @@
     <PackageReference Include="MySql.Data" Version="8.0.31" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DatabaseHelper\Scripts\" />
+  </ItemGroup>
+
 </Project>
