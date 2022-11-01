@@ -13,6 +13,52 @@ namespace MySQLBackend.DatabaseHelper
         const string baseDatos = "mydatabase";
         const string strConexion = $"server={servidor};Port={port};uid={user};pwd={password};database={baseDatos}";
 
+        public static List<User> GetUsers()
+        {
+            List<User> userList = new List<User>();
+            DataTable ds = ExecuteStoreProcedure("spGetUsers", null);
+
+            foreach (DataRow dr in ds.Rows)
+            {
+                userList.Add(new User()
+                {
+                    Id = Convert.ToInt32(dr["Id"]),
+                    Name = dr["Name"].ToString(),
+                    LastName = dr["LastName"].ToString(),
+                    Email = dr["Email"].ToString(),
+                    Address = dr["Address"].ToString(),
+                    Phone = Convert.ToInt32(dr["Phone"]),
+                    DateIn = Convert.ToDateTime(dr["DateIn"].ToString()),
+                });
+            }
+
+            return userList;
+        }
+
+        public static User? GetUser(int id)
+        {
+            DataTable ds = ExecuteStoreProcedure("spGetUser", new List<MySqlParameter>()
+            {
+                new MySqlParameter("pId", id),
+            });
+
+            if (ds.Rows.Count == 0)
+            {
+                return null;
+            }
+
+            return new User()
+            {
+                Id = Convert.ToInt32(ds.Rows[0]["Id"]),
+                Name = ds.Rows[0]["Name"].ToString(),
+                LastName = ds.Rows[0]["LastName"].ToString(),
+                Email = ds.Rows[0]["Email"].ToString(),
+                Address = ds.Rows[0]["Address"].ToString(),
+                Phone = Convert.ToInt32(ds.Rows[0]["Phone"]),
+                DateIn = Convert.ToDateTime(ds.Rows[0]["DateIn"].ToString()),
+            };
+        }
+
         public static void InsertUser(User user)
         {
             List<MySqlParameter> paramList = new List<MySqlParameter>()
@@ -26,6 +72,29 @@ namespace MySQLBackend.DatabaseHelper
             };
 
             ExecStoreProcedure("spInsertUser", paramList);
+        }
+
+        public static void DeleteUser(int id)
+        {
+            ExecStoreProcedure("spDeleteUser", new List<MySqlParameter>()
+            {
+                new MySqlParameter("pId", id),
+            });
+        }
+
+        public static void UpdateUser(User user)
+        {
+            List<MySqlParameter> paramList = new List<MySqlParameter>()
+            {
+                new MySqlParameter("pId", user.Id),
+                new MySqlParameter("pName", user.Name),
+                new MySqlParameter("pLastName",user.LastName),
+                new MySqlParameter("pEmail",user.Email),
+                new MySqlParameter("pPhone",user.Phone),
+                new MySqlParameter("pAddress",user.Address)
+            };
+
+            ExecStoreProcedure("spUpdateUser", paramList);
         }
 
         //Para select 

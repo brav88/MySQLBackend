@@ -3,6 +3,34 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var @item in @ViewBag.UserList)
+                {
+                    <tr onclick="window.location.href='Home/Edit?id=@item.Id'">
+                        <th scope="row">@item.Id</th>
+                        <td>@item.Name</td>
+                        <td>@item.LastName</td>
+                        <td>@item.Phone</td>
+                        <td>@item.Email</td>
+                        <td>@item.Address</td>
+                        <td>@item.DateIn</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-action="Create" asp-controller="Home">Create user</a>
+    </div>
 </div>
