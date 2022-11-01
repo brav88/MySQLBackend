@@ -53,5 +53,33 @@ BEGIN
 END$$
 DELIMITER ;
 
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetUser`(IN pId INT)
+BEGIN
+	SELECT * FROM users WHERE id = pId;
+END
 
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateUser`(IN pId INT,
+								 IN pName VARCHAR(50), 
+								 IN pLastname VARCHAR(50),
+                                 IN pEmail VARCHAR(50),
+                                 IN pPhone INT,
+                                 IN pAddress VARCHAR(50))
+BEGIN
+	
+    UPDATE users SET Name = pName,
+					 LastName = pLastName,
+                     Email = pEmail,
+                     Phone = pPhone,
+                     Address = pAddress
+    WHERE Id = pId;							
+    
+END
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteUser`(IN pId INT)
+BEGIN
+	DELETE FROM users WHERE Id = pId;
+END
 
